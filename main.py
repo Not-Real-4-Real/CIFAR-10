@@ -7,6 +7,13 @@ from torchvision import datasets, transforms
 
 from models.CNN_v3 import CNN
 
+import os
+
+if os.path.exists("/content/drive/MyDrive/CIFAR-10-data"):
+    data_root = "/content/drive/MyDrive/CIFAR-10-data"
+else:
+    data_root = "./data"
+
 
 # ---- 1. Data ----
 
@@ -15,16 +22,16 @@ transform = transforms.Compose([
 ])
 
 full_train_ds = datasets.CIFAR10(
-    root="./data",
+    root=data_root,
     train=True,
-    download=True,
+    download=False,
     transform=transform
 )
 
 test_ds = datasets.CIFAR10(
-    root="./data",
+    root=data_root,
     train=False,
-    download=True,
+    download=False,
     transform=transform
 )
 
@@ -59,6 +66,11 @@ device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 
+print(f"Using device: {device}")
+
+if torch.cuda.is_available():
+    print(f"GPU: {torch.cuda.get_device_name(0)}")
+
 model = CNN().to(device)
 
 
@@ -68,6 +80,12 @@ criterion = nn.CrossEntropyLoss()
 
 #optimizer = optim.SGD(model.parameters(),lr=0.01)
 optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+scheduler = optim.lr_scheduler.StepLR(
+    optimizer,
+    step_size=5,
+    gamma=0.1
+)
 
 
 # ---- 4. Training loop ----
@@ -162,7 +180,11 @@ for epoch in range(epochs):
         100 * valid_correct / valid_total
     )
 
+    scheduler.step()
+
     epoch_time = time.perf_counter() - epoch_start
+
+    current_lr = optimizer.param_groups[0]["lr"]
 
     # --------------------------------------------------------
     # Print
@@ -174,6 +196,7 @@ for epoch in range(epochs):
         f"Train Acc: {train_accuracy:.2f}% | "
         f"Valid Loss: {avg_valid_loss:.4f} | "
         f"Valid Acc: {valid_accuracy:.2f}% | "
+        f"LR: {current_lr:.6f} | "
         f"Time: {epoch_time:.2f}s"
     )
 
