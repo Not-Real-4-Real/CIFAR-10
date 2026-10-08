@@ -19,6 +19,10 @@ else:
 
 transform = transforms.Compose([
     transforms.ToTensor(),
+    transforms.Normalize(
+        mean=(0.4914, 0.4822, 0.4465),
+        std=(0.2470, 0.2435, 0.2616)
+    ),
 ])
 
 full_train_ds = datasets.CIFAR10(
@@ -78,8 +82,10 @@ model = CNN().to(device)
 
 criterion = nn.CrossEntropyLoss()
 
-#optimizer = optim.SGD(model.parameters(),lr=0.01)
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(
+    model.parameters(),
+    lr=0.001
+)
 
 scheduler = optim.lr_scheduler.StepLR(
     optimizer,
@@ -88,7 +94,15 @@ scheduler = optim.lr_scheduler.StepLR(
 )
 
 
-# ---- 4. Training loop ----
+# ---- 4. Best model tracking ----
+
+best_valid_loss = float("inf")
+best_epoch = 0
+
+best_model_path = "cnn_v3_stepLR_best.pth"
+
+
+# ---- 5. Training loop ----
 
 epochs = 10
 
@@ -180,11 +194,34 @@ for epoch in range(epochs):
         100 * valid_correct / valid_total
     )
 
+    # --------------------------------------------------------
+    # Save best model
+    # --------------------------------------------------------
+
+    if avg_valid_loss < best_valid_loss:
+
+        best_valid_loss = avg_valid_loss
+        best_epoch = epoch + 1
+
+        torch.save(
+            model.state_dict(),
+            best_model_path
+        )
+
+        print(
+            f"  -> New best model saved "
+            f"(Valid Loss: {best_valid_loss:.4f})"
+        )
+
+    # --------------------------------------------------------
+    # Scheduler
+    # --------------------------------------------------------
+
     scheduler.step()
 
-    epoch_time = time.perf_counter() - epoch_start
-
     current_lr = optimizer.param_groups[0]["lr"]
+
+    epoch_time = time.perf_counter() - epoch_start
 
     # --------------------------------------------------------
     # Print
@@ -200,10 +237,29 @@ for epoch in range(epochs):
         f"Time: {epoch_time:.2f}s"
     )
 
-total_time = time.perf_counter() - start_time
-print(f"Total training time: {total_time:.2f}s")
 
-# ---- 5. Final Test Evaluation ----
+total_time = time.perf_counter() - start_time
+
+print(f"Total training time: {total_time:.2f}s")
+print(
+    f"Best model: Epoch {best_epoch} "
+    f"| Valid Loss: {best_valid_loss:.4f}"
+)
+
+
+# ---- 6. Load best model ----
+
+model.load_state_dict(
+    torch.load(
+        best_model_path,
+        map_location=device
+    )
+)
+
+print(f"Loaded best model from epoch {best_epoch}")
+
+
+# ---- 7. Final Test Evaluation ----
 
 model.eval()
 
