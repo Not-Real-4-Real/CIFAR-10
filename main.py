@@ -5,7 +5,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-from models.CNN_v3 import CNN
+from models.CNN_v5 import CNN
 
 import os
 
