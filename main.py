@@ -99,7 +99,7 @@ scheduler = optim.lr_scheduler.StepLR(
 best_valid_loss = float("inf")
 best_epoch = 0
 
-best_model_path = "cnn_v3_stepLR_best.pth"
+best_model_path = "cnn_best.pth"
 
 
 # ---- 5. Training loop ----
@@ -259,9 +259,41 @@ model.load_state_dict(
 print(f"Loaded best model from epoch {best_epoch}")
 
 
-# ---- 7. Final Test Evaluation ----
+# ---- 7. Final Training Evaluation (Dropout OFF) ----
 
 model.eval()
+
+train_eval_correct = 0
+train_eval_total = 0
+
+with torch.no_grad():
+
+    for images, labels in train_loader:
+
+        images = images.to(device)
+        labels = labels.to(device)
+
+        outputs = model(images)
+
+        preds = outputs.argmax(dim=1)
+
+        train_eval_correct += (
+            preds == labels
+        ).sum().item()
+
+        train_eval_total += labels.size(0)
+
+train_eval_accuracy = (
+    100 * train_eval_correct / train_eval_total
+)
+
+print(
+    f"Training accuracy with Dropout OFF: "
+    f"{train_eval_accuracy:.2f}%"
+)
+
+
+# ---- 8. Final Test Evaluation ----
 
 correct = 0
 total = 0
