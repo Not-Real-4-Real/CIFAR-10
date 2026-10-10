@@ -5,7 +5,7 @@ import torch.optim as optim
 
 from models.CNN_v5 import CNN
 
-from data_process.data_augment import get_loaders
+from data_process.data_augment_v3 import get_loaders
 
 train_loader, valid_loader, test_loader = get_loaders()
 
