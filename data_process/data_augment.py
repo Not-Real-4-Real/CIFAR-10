@@ -82,6 +82,12 @@ def get_loaders(
         shuffle=True
     )
 
+    train_eval_loader = DataLoader(
+        Subset(train_eval_ds, train_indices),
+        batch_size=eval_batch_size,
+        shuffle=False
+    )
+
     valid_loader = DataLoader(
         valid_ds,
         batch_size=eval_batch_size,
@@ -94,4 +100,9 @@ def get_loaders(
         shuffle=False
     )
 
-    return train_loader, valid_loader, test_loader
+    return (
+        train_loader,
+        valid_loader,
+        test_loader,
+        train_eval_loader
+    )

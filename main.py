@@ -7,7 +7,7 @@ from models.CNN_v5 import CNN
 
 from data_process.data_augment_v3 import get_loaders
 
-train_loader, valid_loader, test_loader = get_loaders()
+train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
 
 # ---- 2. Model ----
 
@@ -213,7 +213,7 @@ train_eval_total = 0
 
 with torch.no_grad():
 
-    for images, labels in train_loader:
+    for images, labels in train_eval_loader:
 
         images = images.to(device)
         labels = labels.to(device)
