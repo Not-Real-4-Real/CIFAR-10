@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from Stage import Stage
+from models.Stage import Stage
 
 
 class ResNet18(nn.Module):
@@ -72,37 +72,37 @@ class ResNet18(nn.Module):
 
         return x
 
-model = ResNet18(num_classes=10)
+# model = ResNet18(num_classes=10)
 
-# Simulate one CIFAR-10 batch
-x = torch.randn(64, 3, 32, 32)
+# # Simulate one CIFAR-10 batch
+# x = torch.randn(64, 3, 32, 32)
 
-# Forward pass
-model.eval()
+# # Forward pass
+# model.eval()
 
-with torch.no_grad():
-    output = model(x)
+# with torch.no_grad():
+#     output = model(x)
 
-print("Input shape: ", x.shape)
-print("Output shape:", output.shape)
-print("Parameters:", sum(
-    p.numel() for p in model.parameters()
-))
+# print("Input shape: ", x.shape)
+# print("Output shape:", output.shape)
+# print("Parameters:", sum(
+#     p.numel() for p in model.parameters()
+# ))
 
-# Check the output dimensions
-assert output.shape == (64, 10)
+# # Check the output dimensions
+# assert output.shape == (64, 10)
 
-# Check backward propagation
-model.train()
+# # Check backward propagation
+# model.train()
 
-x = torch.randn(4, 3, 32, 32)
-labels = torch.randint(0, 10, (4,))
+# x = torch.randn(4, 3, 32, 32)
+# labels = torch.randint(0, 10, (4,))
 
-criterion = torch.nn.CrossEntropyLoss()
-output = model(x)
-loss = criterion(output, labels)
+# criterion = torch.nn.CrossEntropyLoss()
+# output = model(x)
+# loss = criterion(output, labels)
 
-loss.backward()
+# loss.backward()
 
-print("Loss:", loss.item())
-print("Backward pass successful")
+# print("Loss:", loss.item())
+# print("Backward pass successful")

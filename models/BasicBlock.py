@@ -67,38 +67,38 @@ class BasicBlock(nn.Module):
         return out
 
 
-# Case 1: Same channels and spatial dimensions
-block1 = BasicBlock(
-    in_channels=64,
-    out_channels=64,
-    stride=1
-)
+# # Case 1: Same channels and spatial dimensions
+# block1 = BasicBlock(
+#     in_channels=64,
+#     out_channels=64,
+#     stride=1
+# )
 
-x1 = torch.randn(4, 64, 32, 32)
-y1 = block1(x1)
+# x1 = torch.randn(4, 64, 32, 32)
+# y1 = block1(x1)
 
-print("Case 1")
-print("Input: ", x1.shape)
-print("Output:", y1.shape)
-
-
-# Case 2: Increase channels and downsample
-block2 = BasicBlock(
-    in_channels=64,
-    out_channels=128,
-    stride=2
-)
-
-x2 = torch.randn(4, 64, 32, 32)
-y2 = block2(x2)
-
-print("\nCase 2")
-print("Input: ", x2.shape)
-print("Output:", y2.shape)
+# print("Case 1")
+# print("Input: ", x1.shape)
+# print("Output:", y1.shape)
 
 
-# Verify backward propagation
-loss = y2.mean()
-loss.backward()
+# # Case 2: Increase channels and downsample
+# block2 = BasicBlock(
+#     in_channels=64,
+#     out_channels=128,
+#     stride=2
+# )
 
-print("\nBackward pass successful")
+# x2 = torch.randn(4, 64, 32, 32)
+# y2 = block2(x2)
+
+# print("\nCase 2")
+# print("Input: ", x2.shape)
+# print("Output:", y2.shape)
+
+
+# # Verify backward propagation
+# loss = y2.mean()
+# loss.backward()
+
+# print("\nBackward pass successful")
