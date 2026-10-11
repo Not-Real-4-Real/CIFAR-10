@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.ResNet_CNN_v4 import CNN
+from models.ResNet18 import ResNet18
 from data_process.data import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
@@ -19,7 +19,7 @@ print(f"Using device: {device}")
 if torch.cuda.is_available():
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
-model = CNN().to(device)
+model = ResNet18().to(device)
 
 
 # ---- 3. Loss & optimizer ----
@@ -43,7 +43,7 @@ scheduler = optim.lr_scheduler.StepLR(
 best_valid_loss = float("inf")
 best_epoch = 0
 
-best_model_path = "cnn_best.pth"
+best_model_path = "resnet_best.pth"
 
 
 # ---- 5. Training loop ----
