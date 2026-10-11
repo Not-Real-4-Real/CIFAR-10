@@ -3,9 +3,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.CNN_v5 import CNN
-
-from data_process.data_augment_v3 import get_loaders
+from models.ResNet_CNN_v4 import CNN
+from data_process.data import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
 
