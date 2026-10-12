@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from models.ResNet18 import ResNet18
-from data_process.data import get_loaders
+from data_process.data_augment import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
 
@@ -33,8 +33,8 @@ optimizer = optim.Adam(
 
 scheduler = optim.lr_scheduler.StepLR(
     optimizer,
-    step_size=5,
-    gamma=0.1
+    step_size=10,
+    gamma=0.2
 )
 
 
@@ -48,7 +48,7 @@ best_model_path = "resnet_best.pth"
 
 # ---- 5. Training loop ----
 
-epochs = 10
+epochs = 15
 
 start_time = time.perf_counter()
 
