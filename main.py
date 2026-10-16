@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.ViT_homemade import ViT
+from models.ViT_HM_v2 import ViT
 from data_process.data_augment import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
@@ -31,10 +31,16 @@ criterion = nn.CrossEntropyLoss()
 #     lr=0.001,
 # )
 
-optimizer = optim.Adam(
+# optimizer = optim.Adam(
+#     model.parameters(),
+#     lr=0.001,
+#     weight_decay=1e-4
+# )
+
+optimizer = optim.AdamW(
     model.parameters(),
-    lr=0.001,
-    weight_decay=1e-4
+    lr=3e-4,
+    weight_decay=0.05
 )
 
 # scheduler = optim.lr_scheduler.StepLR(
