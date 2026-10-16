@@ -30,14 +30,14 @@ class ResNet18(nn.Module):
     def forward(self, x):
         return self.model(x)
 
-import torch
+# import torch
 
-model = ResNet18(num_classes=10)
+# model = ResNet18(num_classes=10)
 
-x = torch.randn(64, 3, 32, 32)
-y = model(x)
+# x = torch.randn(64, 3, 32, 32)
+# y = model(x)
 
-print(y.shape)
-print(sum(p.numel() for p in model.parameters()))
+# print(y.shape)
+# print(sum(p.numel() for p in model.parameters()))
 
-assert y.shape == (64, 10)
+# assert y.shape == (64, 10)

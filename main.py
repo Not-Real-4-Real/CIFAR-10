@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.PT_ResNet18 import ResNet18
+from models.ViT_homemade import ViT
 from data_process.data_augment import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
@@ -19,7 +19,7 @@ print(f"Using device: {device}")
 if torch.cuda.is_available():
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
-model = ResNet18().to(device)
+model = ViT().to(device)
 
 
 # ---- 3. Loss & optimizer ----
@@ -37,24 +37,24 @@ optimizer = optim.Adam(
     weight_decay=1e-4
 )
 
-scheduler = optim.lr_scheduler.StepLR(
-    optimizer,
-    step_size=10,
-    gamma=0.2
-)
-
-# scheduler = optim.lr_scheduler.CosineAnnealingLR(
+# scheduler = optim.lr_scheduler.StepLR(
 #     optimizer,
-#     T_max=15,
-#     eta_min=1e-5
+#     step_size=10,
+#     gamma=0.2
 # )
+
+scheduler = optim.lr_scheduler.CosineAnnealingLR(
+    optimizer,
+    T_max=15,
+    eta_min=1e-5
+)
 
 # ---- 4. Best model tracking ----
 
 best_valid_loss = float("inf")
 best_epoch = 0
 
-best_model_path = "resnet_best.pth"
+best_model_path = "ViT_best.pth"
 
 
 # ---- 5. Training loop ----
