@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.ResNet18 import ResNet18
+from models.PT_ResNet18 import ResNet18
 from data_process.data_augment import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
@@ -26,9 +26,15 @@ model = ResNet18().to(device)
 
 criterion = nn.CrossEntropyLoss()
 
+# optimizer = optim.Adam(
+#     model.parameters(),
+#     lr=0.001,
+# )
+
 optimizer = optim.Adam(
     model.parameters(),
-    lr=0.001
+    lr=0.001,
+    weight_decay=1e-4
 )
 
 scheduler = optim.lr_scheduler.StepLR(
@@ -37,6 +43,11 @@ scheduler = optim.lr_scheduler.StepLR(
     gamma=0.2
 )
 
+# scheduler = optim.lr_scheduler.CosineAnnealingLR(
+#     optimizer,
+#     T_max=15,
+#     eta_min=1e-5
+# )
 
 # ---- 4. Best model tracking ----
 
