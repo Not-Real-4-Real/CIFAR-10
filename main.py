@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from models.ViT_HM_v2 import ViT
+from models.ViT_HM_v3 import ViT
 from data_process.data_augment import get_loaders
 
 train_loader, valid_loader, test_loader, train_eval_loader = get_loaders()
@@ -51,7 +51,7 @@ optimizer = optim.AdamW(
 
 scheduler = optim.lr_scheduler.CosineAnnealingLR(
     optimizer,
-    T_max=15,
+    T_max=25,
     eta_min=1e-5
 )
 
@@ -60,12 +60,12 @@ scheduler = optim.lr_scheduler.CosineAnnealingLR(
 best_valid_loss = float("inf")
 best_epoch = 0
 
-best_model_path = "ViT_best.pth"
+best_model_path = "ViT_v3_best.pth"
 
 
 # ---- 5. Training loop ----
 
-epochs = 15
+epochs = 25
 
 start_time = time.perf_counter()
 

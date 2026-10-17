@@ -166,22 +166,22 @@ class ViT(nn.Module):
         return logits
 
 
-import torch
+# import torch
 
-model = ViT(num_classes=10)
+# model = ViT(num_classes=10)
 
-x = torch.randn(64, 3, 32, 32)
+# x = torch.randn(64, 3, 32, 32)
 
-with torch.no_grad():
-    logits = model(x)
+# with torch.no_grad():
+#     logits = model(x)
 
-print("Input shape:", x.shape)
-print("Output shape:", logits.shape)
+# print("Input shape:", x.shape)
+# print("Output shape:", logits.shape)
 
-num_params = sum(
-    p.numel()
-    for p in model.parameters()
-    if p.requires_grad
-)
+# num_params = sum(
+#     p.numel()
+#     for p in model.parameters()
+#     if p.requires_grad
+# )
 
-print(f"Parameters: {num_params:,}")
+# print(f"Parameters: {num_params:,}")
